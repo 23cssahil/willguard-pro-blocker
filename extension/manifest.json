@@ -22,10 +22,6 @@
       "run_at": "document_start"
     }
   ],
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": "icon.png"
-  },
   "declarative_net_request": {
     "rule_resources": [{
       "id": "ruleset_1",
