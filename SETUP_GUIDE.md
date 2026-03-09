@@ -82,4 +82,16 @@ This is the part that sits in your browser and blocks the sites.
 
 ---
 
+### ⚠️ Troubleshooting: 404 Page Not Found on Vercel
+If you see a 404 error after deploying, it means Vercel didn't recognize your project as a **Next.js** app.
+
+1.  Go to your project in the **Vercel Dashboard**.
+2.  Go to **Settings > General**.
+3.  Look for **Framework Preset**.
+4.  If it says **"Other"**, change it to **"Next.js"**.
+5.  Click **Save**.
+6.  Now go to the **Deployments** tab and click **Redeploy**.
+
+---
+
 **That's it!** Your platform is now fully powered by AI and secured by your own Google Sheet.
