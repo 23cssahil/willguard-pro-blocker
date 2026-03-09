@@ -46,21 +46,39 @@ export default function Home() {
           </a>
         </div>
 
-        <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-          <div className="p-8 rounded-3xl bg-zinc-900/50 border border-white/5 backdrop-blur-xl">
-            <Lock className="w-8 h-8 text-purple-500 mb-6" />
-            <h3 className="text-xl font-bold mb-3">Commitment Contract</h3>
-            <p className="text-zinc-400 text-sm leading-relaxed">Seal your discipline with a binding contract that cannot be broken until the timer hits zero.</p>
+        <div id="extension" className="mt-40 w-full pt-20 border-t border-white/5 text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-6">
+            Shield Protocol
           </div>
-          <div className="p-8 rounded-3xl bg-zinc-900/50 border border-white/5 backdrop-blur-xl">
-            <Shield className="w-8 h-8 text-blue-500 mb-6" />
-            <h3 className="text-xl font-bold mb-3">AI Content Filter</h3>
-            <p className="text-zinc-400 text-sm leading-relaxed">Advanced AI scans and blocks adult content in real-time across the entire web.</p>
-          </div>
-          <div className="p-8 rounded-3xl bg-zinc-900/50 border border-white/5 backdrop-blur-xl">
-            <Zap className="w-8 h-8 text-yellow-500 mb-6" />
-            <h3 className="text-xl font-bold mb-3">Accountability</h3>
-            <p className="text-zinc-400 text-sm leading-relaxed">Notify a trusted partner instantly if you ever attempt to bypass your protective locks.</p>
+          <h2 className="text-4xl font-bold mb-6">Install the AI Guardian</h2>
+          <p className="text-zinc-400 mb-10 max-w-xl text-lg leading-relaxed">
+            The PureWill extension is the "watchman" of your digital life. It works alongside the dashboard to enforce your commitment contracts.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="p-8 rounded-3xl bg-zinc-900/50 border border-white/5 backdrop-blur-xl">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                <Shield className="w-5 h-5 text-blue-500" />
+                Step 1: Download
+              </h3>
+              <p className="text-zinc-400 text-sm mb-6">Download the extension source code to your computer.</p>
+              <a 
+                href="https://github.com/23cssahil/stop-porn-ai/archive/refs/heads/main.zip" 
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-bold transition-all"
+              >
+                Download ZIP <Zap className="w-4 h-4 text-yellow-500" />
+              </a>
+            </div>
+            
+            <div className="p-8 rounded-3xl bg-zinc-900/50 border border-white/5 backdrop-blur-xl">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                <Lock className="w-5 h-5 text-purple-500" />
+                Step 2: Activate
+              </h3>
+              <p className="text-zinc-400 text-sm">
+                Unzip the file, go to <code className="text-white">chrome://extensions</code>, turn on **Developer Mode**, and click **Load Unpacked**. Select the "extension" folder.
+              </p>
+            </div>
           </div>
         </div>
       </main>
