@@ -27,6 +27,12 @@ export async function initSheet() {
         title: 'UserData', 
         headerValues: ['userId', 'email', 'lockUntil', 'streak', 'partnerEmail'] 
       });
+    } else {
+      // Ensure headers exist if sheet is empty
+      await sheet.loadHeaderRow();
+      if (sheet.headerValues.length === 0) {
+        await sheet.setHeaderRow(['userId', 'email', 'lockUntil', 'streak', 'partnerEmail']);
+      }
     }
     return sheet;
   } catch (error: any) {

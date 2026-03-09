@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Lock, Shield, Zap, Bell, Clock, AlertCircle, CheckCircle2, ArrowRight } from "lucide-react";
+import { Lock, Shield, Zap, Bell, Clock, AlertCircle, CheckCircle2, ArrowRight, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Dashboard() {
@@ -66,7 +67,7 @@ export default function Dashboard() {
       const res = await fetch("/api/lock", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, duration, partnerEmail, email: "user@example.com" }),
+        body: JSON.stringify({ userId, duration: Number(duration), partnerEmail, email: "user@example.com" }),
       });
       const data = await res.json();
       if (data.success) {
@@ -92,11 +93,16 @@ export default function Dashboard() {
       </div>
 
       <nav className="relative z-10 flex justify-between items-center p-6 border-b border-white/5 backdrop-blur-md bg-black/20">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-tr from-purple-600 to-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
-            <Shield className="w-6 h-6 text-white" />
+        <div className="flex items-center gap-6">
+          <Link href="/" className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm font-medium">
+            <ArrowLeft className="w-4 h-4" /> Home
+          </Link>
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-gradient-to-tr from-purple-600 to-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
+              <Shield className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-xl font-bold tracking-tight">PureWill <span className="text-purple-500 text-sm">AI</span></span>
           </div>
-          <span className="text-xl font-bold tracking-tight">PureWill <span className="text-purple-500 text-sm">AI</span></span>
         </div>
         <div className="flex items-center gap-4">
           <button className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-white/10 text-sm font-medium">Documentation</button>
