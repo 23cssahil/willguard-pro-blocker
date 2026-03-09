@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Lock, Shield, Zap, Bell, Clock, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Lock, Shield, Zap, Bell, Clock, AlertCircle, CheckCircle2, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Dashboard() {
