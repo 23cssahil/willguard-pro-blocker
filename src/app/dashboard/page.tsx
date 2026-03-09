@@ -11,26 +11,38 @@ export default function Dashboard() {
   const [duration, setDuration] = useState(7);
   const [partnerEmail, setPartnerEmail] = useState("");
   const [showAgreement, setShowAgreement] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Mock userId - in production this would come from Auth (Clerk/NextAuth)
-  const userId = "user_sahil_123";
+  const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
+    // Generate or retrieve a persistent userId for this browser
+    let id = localStorage.getItem("purewill_userid");
+    if (!id) {
+      id = "user_" + Math.random().toString(36).substring(2, 9);
+      localStorage.setItem("purewill_userid", id);
+    }
+    setUserId(id);
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+
     async function checkStatus() {
       try {
         setError(null);
         const res = await fetch(`/api/status?userId=${userId}`);
-        if (!res.ok) throw new Error("Server error");
         const data = await res.json();
         
+        if (data.error) {
+           setError(`Database Error: ${data.error}`);
+           return;
+        }
+
         if (data.isLocked) {
           setIsLocked(true);
           const end = new Date(data.lockUntil).getTime();
           const now = new Date().getTime();
           const remaining = Math.floor((end - now) / 1000);
-          console.log("Locked until:", data.lockUntil, "Remaining:", remaining);
           setTimeLeft(remaining > 0 ? remaining : 0);
         } else {
           setIsLocked(false);
@@ -38,7 +50,7 @@ export default function Dashboard() {
         }
       } catch (e: any) {
         console.error("Failed to fetch status", e);
-        setError("Could not sync with database. Check your connection.");
+        setError("Network Error: Could not reach the server.");
       } finally {
         setIsLoading(false);
       }
