@@ -12,6 +12,7 @@ export default function Dashboard() {
   const [partnerEmail, setPartnerEmail] = useState("");
   const [showAgreement, setShowAgreement] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Mock userId - in production this would come from Auth (Clerk/NextAuth)
   const userId = "user_sahil_123";
@@ -19,17 +20,25 @@ export default function Dashboard() {
   useEffect(() => {
     async function checkStatus() {
       try {
+        setError(null);
         const res = await fetch(`/api/status?userId=${userId}`);
+        if (!res.ok) throw new Error("Server error");
         const data = await res.json();
+        
         if (data.isLocked) {
           setIsLocked(true);
           const end = new Date(data.lockUntil).getTime();
           const now = new Date().getTime();
           const remaining = Math.floor((end - now) / 1000);
+          console.log("Locked until:", data.lockUntil, "Remaining:", remaining);
           setTimeLeft(remaining > 0 ? remaining : 0);
+        } else {
+          setIsLocked(false);
+          setTimeLeft(0);
         }
-      } catch (e) {
+      } catch (e: any) {
         console.error("Failed to fetch status", e);
+        setError("Could not sync with database. Check your connection.");
       } finally {
         setIsLoading(false);
       }
@@ -127,7 +136,14 @@ export default function Dashboard() {
               </div>
               
               <h1 className="text-3xl font-bold mb-2">Commitment Dashboard</h1>
-              <p className="text-zinc-400 mb-8 max-w-md">Your willpower is your superpower. Stay disciplined, stay focused, and reach your peak performance.</p>
+              <p className="text-zinc-400 mb-8 max-w-md">Your willpower is your superpower. Stay disciplined, stay focused, and reach your peak performance. {userId}</p>
+
+              {error && (
+                <div className="mb-8 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-center gap-3">
+                  <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                  {error}
+                </div>
+              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-6 rounded-2xl bg-black/30 border border-white/5">
@@ -135,7 +151,9 @@ export default function Dashboard() {
                     <Zap className="w-5 h-5 text-yellow-500" />
                     <span className="font-semibold">Current Streak</span>
                   </div>
-                  <div className="text-4xl font-black text-white">12 <span className="text-sm font-normal text-zinc-500">Days</span></div>
+                  <div className="text-4xl font-black text-white">
+                    {isLoading ? "..." : "12"} <span className="text-sm font-normal text-zinc-500">Days</span>
+                  </div>
                 </div>
                 <div className="p-6 rounded-2xl bg-black/30 border border-white/5">
                   <div className="flex items-center gap-3 mb-4">
@@ -143,13 +161,13 @@ export default function Dashboard() {
                     <span className="font-semibold">Time Remaining</span>
                   </div>
                   <div className="text-2xl font-mono text-white tabular-nums tracking-tighter">
-                    {isLocked ? formatTime(timeLeft) : "00d 00h 00m 00s"}
+                    {isLoading ? "Syncing..." : isLocked ? formatTime(timeLeft) : "00d 00h 00m 00s"}
                   </div>
                 </div>
               </div>
 
               {!isLocked ? (
-                <div className="mt-8 space-y-6">
+                <div className={`mt-8 space-y-6 ${isLoading ? "opacity-50 pointer-events-none" : ""}`}>
                   <div className="p-6 rounded-2xl bg-purple-500/5 border border-purple-500/10">
                     <h3 className="font-semibold mb-4 flex items-center gap-2">
                         <Lock className="w-4 h-4 text-purple-500" />
@@ -174,7 +192,7 @@ export default function Dashboard() {
 
                   <button 
                     onClick={() => setShowAgreement(true)}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 font-bold text-lg hover:opacity-90 transition-opacity shadow-lg shadow-purple-600/20"
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 font-bold text-lg hover:opacity-90 transition-opacity shadow-lg shadow-purple-600/20 disabled:opacity-50"
                   >
                     Initiate Digital Lockdown
                   </button>
