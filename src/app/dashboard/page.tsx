@@ -159,6 +159,7 @@ export default function Dashboard() {
               <p className="text-zinc-400 mb-8 max-w-md">Your willpower is your superpower. Stay disciplined, stay focused, and reach your peak performance.</p>
 
               {error && (
+                <div className="mb-8 p-6 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 space-y-3">
                   <div className="flex items-center gap-3 font-bold text-sm">
                     <AlertCircle className="w-5 h-5 flex-shrink-0" />
                     Database Sync Error
