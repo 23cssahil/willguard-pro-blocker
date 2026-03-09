@@ -174,12 +174,43 @@ export default function Dashboard() {
                   </button>
                 </div>
               ) : (
-                <div className="mt-8 p-6 rounded-2xl bg-green-500/5 border border-green-500/10 flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-green-500">
-                    <CheckCircle2 className="w-6 h-6" />
-                    <span className="font-semibold">Lockdown Active - AI Guardian Engaged</span>
+                <div className="mt-8 p-6 rounded-2xl bg-green-500/5 border border-green-500/10">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3 text-green-500">
+                      <CheckCircle2 className="w-6 h-6" />
+                      <span className="font-semibold">Lockdown Active - AI Guardian Engaged</span>
+                    </div>
+                    <div className="text-zinc-500 text-sm italic">Deactivation buttons hidden</div>
                   </div>
-                  <div className="text-zinc-500 text-sm italic">Deactivation buttons hidden</div>
+
+                  <div className="p-6 rounded-2xl bg-black/40 border border-white/5 space-y-4">
+                    <h3 className="font-bold text-white flex items-center gap-2">
+                      <Zap className="w-4 h-4 text-yellow-500" />
+                      Step 2: Activate Extension
+                    </h3>
+                    <p className="text-sm text-zinc-400">
+                      Chrome prevents websites from opening internal settings automatically for your security. Please follow these 2 quick steps:
+                    </p>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex gap-3 items-start">
+                        <div className="w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 text-xs font-bold text-purple-400 border border-purple-500/20">1</div>
+                        <p className="text-zinc-300">Open <code className="bg-zinc-800 px-2 py-0.5 rounded text-white">chrome://extensions/</code> in a new tab.</p>
+                      </div>
+                      <div className="flex gap-3 items-start">
+                        <div className="w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 text-xs font-bold text-purple-400 border border-purple-500/20">2</div>
+                        <p className="text-zinc-300">Ensure <strong>Developer Mode</strong> (top right) is ON and the <strong>PureWill AI</strong> extension is active.</p>
+                      </div>
+                    </div>
+                    <button 
+                      onClick={() => window.open('chrome://extensions/', '_blank')}
+                      className="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/10 text-sm font-bold flex items-center justify-center gap-2 text-zinc-300"
+                    >
+                      Attempt Open Extension Page <ArrowRight className="w-4 h-4" />
+                    </button>
+                    <p className="text-[10px] text-zinc-500 text-center uppercase tracking-widest mt-2">
+                       Manual open is required if the button is blocked by the browser
+                    </p>
+                  </div>
                 </div>
               )}
             </motion.div>
