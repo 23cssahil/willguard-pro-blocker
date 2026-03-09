@@ -24,27 +24,35 @@ export async function initSheet() {
   const doc = new GoogleSpreadsheet(sheetId, jwt);
 
   try {
-    console.log("Initializing Google Sheet...");
+    console.log(`Initialising Google Sheet: ${sheetId.substring(0, 5)}...`);
     await doc.loadInfo();
-    console.log("Sheet Loaded:", doc.title);
+    console.log("Sheet Loaded Successfully:", doc.title);
     
     let sheet = doc.sheetsByTitle['UserData'];
     if (!sheet) {
-      console.log("UserData sheet not found, creating one...");
+      console.log("UserData tab not found. Available tabs:", Object.keys(doc.sheetsByTitle).join(', '));
+      console.log("Creating UserData tab...");
       sheet = await doc.addSheet({ 
         title: 'UserData', 
         headerValues: ['userId', 'email', 'lockUntil', 'streak', 'partnerEmail'] 
       });
     } else {
-      // Ensure headers exist if sheet is empty
       await sheet.loadHeaderRow();
       if (sheet.headerValues.length === 0) {
+        console.log("Sheet is empty, setting headers...");
         await sheet.setHeaderRow(['userId', 'email', 'lockUntil', 'streak', 'partnerEmail']);
       }
     }
     return sheet;
   } catch (error: any) {
-    console.error("Error in initSheet:", error.message);
+    console.error("FATAL: Google Sheets Connection Failed.");
+    console.error("Error Message:", error.message);
+    if (error.message.includes('403')) {
+      throw new Error(`Permission Denied: Please share your sheet with ${clientEmail} as an EDITOR.`);
+    }
+    if (error.message.includes('404')) {
+      throw new Error(`Sheet Not Found: Check if GOOGLE_SHEET_ID is correct.`);
+    }
     throw error;
   }
 }
