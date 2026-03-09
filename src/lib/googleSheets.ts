@@ -15,10 +15,22 @@ const jwt = new JWT({
 export const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID!, jwt);
 
 export async function initSheet() {
-  await doc.loadInfo();
-  let sheet = doc.sheetsByTitle['UserData'];
-  if (!sheet) {
-    sheet = await doc.addSheet({ title: 'UserData', headerValues: ['userId', 'email', 'lockUntil', 'streak', 'partnerEmail'] });
+  try {
+    console.log("Initializing Google Sheet...");
+    await doc.loadInfo();
+    console.log("Sheet Loaded:", doc.title);
+    
+    let sheet = doc.sheetsByTitle['UserData'];
+    if (!sheet) {
+      console.log("UserData sheet not found, creating one...");
+      sheet = await doc.addSheet({ 
+        title: 'UserData', 
+        headerValues: ['userId', 'email', 'lockUntil', 'streak', 'partnerEmail'] 
+      });
+    }
+    return sheet;
+  } catch (error: any) {
+    console.error("Error in initSheet:", error.message);
+    throw error;
   }
-  return sheet;
 }
