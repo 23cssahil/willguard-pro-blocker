@@ -11,6 +11,7 @@ export default function Dashboard() {
   const [duration, setDuration] = useState(7);
   const [partnerEmail, setPartnerEmail] = useState("");
   const [showAgreement, setShowAgreement] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userId, setUserId] = useState<string>("");
 
