@@ -10,15 +10,44 @@ export default function Dashboard() {
   const [duration, setDuration] = useState(7);
   const [partnerEmail, setPartnerEmail] = useState("");
   const [showAgreement, setShowAgreement] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Mock userId - in production this would come from Auth (Clerk/NextAuth)
+  const userId = "user_sahil_123";
+
+  useEffect(() => {
+    async function checkStatus() {
+      try {
+        const res = await fetch(`/api/status?userId=${userId}`);
+        const data = await res.json();
+        if (data.isLocked) {
+          setIsLocked(true);
+          const end = new Date(data.lockUntil).getTime();
+          const now = new Date().getTime();
+          const remaining = Math.floor((end - now) / 1000);
+          setTimeLeft(remaining > 0 ? remaining : 0);
+        }
+      } catch (e) {
+        console.error("Failed to fetch status", e);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    checkStatus();
+  }, [userId]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (isLocked && timeLeft > 0) {
       timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            setIsLocked(false);
+            return 0;
+          }
+          return prev - 1;
+        });
       }, 1000);
-    } else if (timeLeft === 0) {
-      setIsLocked(false);
     }
     return () => clearInterval(timer);
   }, [isLocked, timeLeft]);
@@ -31,10 +60,27 @@ export default function Dashboard() {
     return `${days}d ${hours}h ${mins}m ${secs}s`;
   };
 
-  const handleLock = () => {
-    setIsLocked(true);
-    setTimeLeft(duration * 24 * 3600);
-    setShowAgreement(false);
+  const handleLock = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/lock", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, duration, partnerEmail, email: "user@example.com" }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIsLocked(true);
+        const end = new Date(data.lockUntil).getTime();
+        const now = new Date().getTime();
+        setTimeLeft(Math.floor((end - now) / 1000));
+        setShowAgreement(false);
+      }
+    } catch (e) {
+      alert("Lock failed. Check connection.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
