@@ -6,15 +6,23 @@ const SCOPES = [
   'https://www.googleapis.com/auth/drive.file',
 ];
 
-const jwt = new JWT({
-  email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-  key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-  scopes: SCOPES,
-});
-
-export const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID!, jwt);
-
 export async function initSheet() {
+  const sheetId = process.env.GOOGLE_SHEET_ID;
+  const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+
+  if (!sheetId || !clientEmail || !privateKey) {
+    throw new Error(`Missing environment variables: ${!sheetId ? 'GOOGLE_SHEET_ID ' : ''}${!clientEmail ? 'GOOGLE_SERVICE_ACCOUNT_EMAIL ' : ''}${!privateKey ? 'GOOGLE_PRIVATE_KEY' : ''}`);
+  }
+
+  const jwt = new JWT({
+    email: clientEmail,
+    key: privateKey.replace(/\\n/g, '\n'),
+    scopes: SCOPES,
+  });
+
+  const doc = new GoogleSpreadsheet(sheetId, jwt);
+
   try {
     console.log("Initializing Google Sheet...");
     await doc.loadInfo();

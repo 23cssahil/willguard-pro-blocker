@@ -31,7 +31,7 @@ export default function Dashboard() {
     async function checkStatus() {
       try {
         setError(null);
-        const res = await fetch(`/api/status?userId=${userId}`);
+        const res = await fetch(`/api/status?userId=${userId}`, { cache: 'no-store' });
         const data = await res.json();
         
         if (data.error) {
@@ -90,6 +90,7 @@ export default function Dashboard() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, duration: Number(duration), partnerEmail, email: "user@example.com" }),
+        cache: 'no-store'
       });
       const data = await res.json();
       if (data.success) {
