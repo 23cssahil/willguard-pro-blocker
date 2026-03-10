@@ -30,14 +30,15 @@
     "rule_resources": [
       {
         "id": "ruleset_1",
-        "enabled": true,
+        "enabled": false,
         "path": "rules.json"
       }
     ]
   },
   "externally_connectable": {
     "matches": [
-      "http://localhost:3000/*"
+      "http://localhost:3000/*",
+      "https://willguard-pro-blocker.vercel.app/*"
     ]
   }
 }
