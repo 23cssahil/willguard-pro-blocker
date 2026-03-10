@@ -1,3 +1,12 @@
+// 0. Instant URL Block (Safety First)
+const nsfwKeywords = ["porn", "sex", "xvideos", "xnxx", "pornhub", "xxx", "adult", "hentai"];
+const currentUrl = window.location.href.toLowerCase();
+
+if (nsfwKeywords.some(keyword => currentUrl.includes(keyword)) && !currentUrl.includes("vercel.app") && !currentUrl.includes("localhost")) {
+    console.log("NSFW Content Detected in URL. Redirecting...");
+    window.location.href = "https://willguard-pro-blocker.vercel.app/dashboard?alert=blocked";
+}
+
 // 1. Sync Bridge: Listen for status updates from the Web App
 window.addEventListener("purewill_sync", (event) => {
     // Standard DOM event detail access

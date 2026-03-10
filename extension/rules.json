@@ -1,10 +1,10 @@
 [
   {
     "id": 1,
-    "priority": 1,
+    "priority": 10,
     "action": { "type": "block" },
     "condition": {
-      "urlFilter": "*://*.porn*",
+      "urlFilter": "*://*/*porn*",
       "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest"]
     }
   },
@@ -85,16 +85,16 @@
     "priority": 1,
     "action": { "type": "block" },
     "condition": {
-      "urlFilter": "*://*.fuq.com*",
-      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest"]
+      "regexFilter": "^https?://.*(q|query)=.*(porn|sex|xvideos|xnxx|pornhub|xxx|adult).*",
+      "resourceTypes": ["main_frame", "sub_frame"]
     }
   },
   {
     "id": 11,
-    "priority": 1,
+    "priority": 10,
     "action": { "type": "block" },
     "condition": {
-      "urlFilter": "*://*.sex*",
+      "urlFilter": "*://*/*sex*",
       "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest"]
     }
   }
